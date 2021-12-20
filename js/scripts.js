@@ -142,3 +142,114 @@ var viewer = OpenSeadragon({
 var zoomLevels = viewer.zoomLevels({
   levels: [0, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 });
+
+var absoluteMapSize;
+var relativeMapSize;
+var prevMarker;
+
+var MARKER_CLICK_HANDLER = '__noita_onClick';
+
+function addMarker(options) {
+  var mapSize = options.mapSize;
+  var marker = options.marker;
+  var point = marker.point;
+
+  var markerEl = document.createElement('div');
+  markerEl.className = 'marker-icon marker-icon_' + marker.icon;
+
+  var markerObj = {
+    hidePopup: function() {
+      if (!toggled) {
+        return;
+      }
+
+      toggled = false;
+
+      render();
+    },
+  };
+
+  var toggled = false;
+
+  markerEl[MARKER_CLICK_HANDLER] = function(event) {
+    if (event.target !== markerEl) {
+      return;
+    }
+
+    if (prevMarker && prevMarker !== markerObj) {
+      prevMarker.hidePopup();
+    }
+
+    toggled = !toggled;
+    render();
+
+    prevMarker = markerObj;
+  };
+
+  var popupEl = document.createElement('div');
+  popupEl.className = 'marker-icon__popup';
+  popupEl.innerHTML = marker.html;
+
+  function render() {
+    markerEl.classList[toggled ? 'add' : 'remove']('marker-icon_active');
+
+    if (!toggled) {
+      if (popupEl.parentNode) {
+        popupEl.parentNode.removeChild(popupEl);
+      }
+      return;
+    }
+
+    markerEl.appendChild(popupEl);
+  }
+
+  viewer.addOverlay({
+    element: markerEl,
+    location: new OpenSeadragon.Point(point.x * mapSize.width, point.y * mapSize.height),
+  });
+}
+
+function onWorldAddItem(event) {
+  var source = event.item.source;
+  if (!/iiif3/.test(source['@id'])) {
+    return;
+  }
+
+  viewer.world.removeHandler('add-item', onWorldAddItem);
+
+  absoluteMapSize = {width: source.dimensions.x, height: source.dimensions.y};
+  // Assuming that map is vertical
+  relativeMapSize = {width: 1, height: absoluteMapSize.height / absoluteMapSize.width};
+
+  window.NoitaMapViewer.markers.forEach(function(marker) {
+    addMarker({
+      mapSize: relativeMapSize,
+      marker: marker
+    });
+  });
+}
+viewer.world.addHandler('add-item', onWorldAddItem);
+
+
+viewer.addHandler('canvas-click', function (event) {
+  var imagePoint = viewer.viewport.viewportToImageCoordinates(viewer.viewport.pointFromPixel(event.position));
+  if (absoluteMapSize) {
+    var x = imagePoint.x / absoluteMapSize.width;
+    var y = imagePoint.y / absoluteMapSize.height;
+
+    console.log('map point: ' + x + ', ' + y);
+  }
+
+  var clickHandler;
+  var target = event.originalTarget;
+  while (target) {
+    clickHandler = target[MARKER_CLICK_HANDLER];
+    if (typeof clickHandler === 'function') {
+      event.preventDefaultAction = true;
+      clickHandler({target: event.originalTarget});
+      break;
+    }
+
+    target = target.parentNode;
+  }
+});

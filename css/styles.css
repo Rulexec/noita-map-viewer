@@ -9,3 +9,118 @@ html {
   padding: 1vh;
   height: 98vh;
 }
+
+.marker-icon {
+  position: relative;
+  overflow: visible;
+  cursor: pointer;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.marker-icon_active {
+  z-index: 2;
+}
+
+.marker-icon_circle-blue {
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  margin-top: -13px;
+  padding-left: 13px;
+  padding-top: 13px;
+  background: url('/icons/circle-blue.png');
+}
+
+.marker-icon_error {
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  margin-top: -13px;
+  padding-left: 13px;
+  padding-top: 13px;
+  background: url('/icons/error.png');
+}
+
+.marker-icon_face-happy {
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  margin-top: -13px;
+  padding-left: 13px;
+  padding-top: 13px;
+  background: url('/icons/face-happy.png');
+}
+
+.marker-icon_flag-green {
+  width: 21px;
+  height: 26px;
+  margin-left: -2px;
+  margin-top: -24px;
+  padding-left: 2px;
+  padding-top: 24px;
+  background: url('/icons/flag-green.png');
+}
+
+.marker-icon_flag-violet {
+  width: 21px;
+  height: 26px;
+  margin-left: -2px;
+  margin-top: -24px;
+  padding-left: 2px;
+  padding-top: 24px;
+  background: url('/icons/flag-violet.png');
+}
+
+.marker-icon_heart {
+  width: 26px;
+  height: 24px;
+  margin-left: -13px;
+  margin-top: -22px;
+  padding-left: 13px;
+  padding-top: 22px;
+  background: url('/icons/heart.png');
+}
+
+.marker-icon_help {
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  margin-top: -13px;
+  padding-left: 13px;
+  padding-top: 13px;
+  background: url('/icons/help.png');
+}
+
+.marker-icon_pin2-red {
+  width: 26px;
+  height: 26px;
+  margin-left: -3px;
+  margin-top: -23px;
+  padding-left: 3px;
+  padding-top: 23px;
+  background: url('/icons/pin2-red.png');
+}
+
+.marker-icon_pin-blue {
+  width: 22px;
+  height: 27px;
+  margin-left: -11px;
+  margin-top: -23px;
+  padding-left: 11px;
+  padding-top: 23px;
+  background: url('/icons/pin-blue.png');
+}
+
+.marker-icon__popup {
+  position: fixed;
+  box-sizing: border-box;
+  max-width: 250px;
+  background: white;
+  cursor: default;
+  font-size: 14px;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  box-shadow: 0 0 5px 1px black;
+  transform: translate(-50%, 5px);
+}
