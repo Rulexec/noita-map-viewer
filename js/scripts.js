@@ -133,8 +133,8 @@ var viewer = OpenSeadragon({
   showNavigator: true,
   navigatorPosition: "BOTTOM_RIGHT",
   navigatorDisplayRegionColor: "#30a3f1",
-  navigatorHeight: 285,
-  navigatorWidth: 200,
+  navigatorHeight: "25vh",
+  navigatorWidth: "17vh",
   tileSources: "/iiif3/info.json"
 });
 
